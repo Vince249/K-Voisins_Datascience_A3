@@ -98,14 +98,35 @@ def Algorithme_K_Voisin (k):
 
     reponse = Determination_de_element(liste_des_k_vsn)
 
-    return (reponse == element_a_tester[4])
+    return (reponse,element_a_tester[4])
 
 
 #! Main
 nb_bon = 0
-nb_eval = 500 #on teste 500 fois
+matrice_resultat = [[0,0,0],[0,0,0],[0,0,0]]
+nb_eval = 100 #on teste 500 fois
 k = 5 #k=5 semble être une valeur plafond en terme de précision
 for i in range(nb_eval):
-    if(Algorithme_K_Voisin(k)): nb_bon+=1
-print("Le taux de réussite de l'algorithme est de " + str((nb_bon/nb_eval)*100) + "%")
+    tupl = Algorithme_K_Voisin(k)
+    notre_resultat,vrai_result = tupl
+    if(notre_resultat == vrai_result): nb_bon+=1
+
+
+    if(notre_resultat=='Iris-versicolor'): x=0
+    if(notre_resultat=='Iris-setosa'): x=1
+    if(notre_resultat=='Iris-virginica'): x=2
+
+    if(vrai_result=='Iris-versicolor'): y=0
+    if(vrai_result=='Iris-setosa'): y=1
+    if(vrai_result=='Iris-virginica'): y=2
+    matrice_resultat[x][y]+= 1
+print()
+print("Le taux de réussite de l'algorithme est de " + str((nb_bon/nb_eval)*100) + "% sur " + str(nb_eval) + " tentatives")
+print()
+print('A gauche on lit ce que nous avons trouvé, en haut ce que la réponse était')
+print()
+print('            versicolor| setosa | virginica')
+print('versicolor |    ' + str(matrice_resultat[0][0]) + '    | ' + str(matrice_resultat[0][1]) + '      |   ' + str(matrice_resultat[0][2]))
+print('setosa     |    ' + str(matrice_resultat[1][0]) + '     | ' + str(matrice_resultat[1][1]) + '     |   ' + str(matrice_resultat[1][2]))
+print('virginica  |    ' + str(matrice_resultat[2][0]) + '     | ' + str(matrice_resultat[2][1]) + '      |   ' + str(matrice_resultat[2][2]))
 
