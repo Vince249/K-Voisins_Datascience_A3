@@ -106,6 +106,8 @@ nb_bon = 0
 matrice_resultat = [[0,0,0],[0,0,0],[0,0,0]]
 nb_eval = 100 #on teste 500 fois
 k = 5 #k=5 semble être une valeur plafond en terme de précision
+
+#Calcul des nb_eval tests et entrées dans la matrice de confusion
 for i in range(nb_eval):
     tupl = Algorithme_K_Voisin(k)
     notre_resultat,vrai_result = tupl
@@ -120,6 +122,8 @@ for i in range(nb_eval):
     if(vrai_result=='Iris-setosa'): y=1
     if(vrai_result=='Iris-virginica'): y=2
     matrice_resultat[x][y]+= 1
+
+    
 print()
 print("Le taux de réussite de l'algorithme est de " + str((nb_bon/nb_eval)*100) + "% sur " + str(nb_eval) + " tentatives")
 print()
