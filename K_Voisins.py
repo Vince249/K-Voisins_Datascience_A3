@@ -68,9 +68,12 @@ def Determination_de_element(liste_voisin_distance):
     maxi = liste_voisin_distance[len(liste_voisin_distance)-1][1]
     for element in liste_voisin_distance:
         #! On veut mettre en avant la proximité des k voisins par rapport à l'élément testé
-        #! On peut imaginer que notre élément à tester est au centre d'un cercle de rayon égal au maxi des distances des k voisins avec cet élément
-        #! Ainsi plus un voisin est proche de l'élément à tester, plus il est probable que l'élément soit considéré comme faisant
-        #! partie du même groupe que lui 
+        #! On peut imaginer que notre élément à tester est au centre d'un cercle de rayon égal à la distance du k voisin le plus éloigné du centre
+        #! Nous utilisons cette distance comme maxi plutôt que la distance maximum parmi TOUS les points afin d'éviter que les différences entre les k
+        #! voisins soient gommées
+        #! La différence entre le maxi et la distance de chaque k voisin est ensuite ajoutée à la valeur générale de probabilité du groupe
+        #! Ainsi plus un voisin est proche de l'élément à tester, plus il va ajouter à la valeur de probabilité d'appartenance de l'élément à tester au groupe
+        #! Le groupe avec la plus grande probabilité est désigné comme étant celui auquel appartient l'élément à tester
         if(element[0][4]== 'Iris-versicolor'):
             grp_versicolor +=  maxi- element[1] 
         if(element[0][4]== 'Iris-virginica'):
@@ -104,8 +107,8 @@ def Algorithme_K_Voisin (k):
 #! Main
 nb_bon = 0
 matrice_resultat = [[0,0,0],[0,0,0],[0,0,0]]
-nb_eval = 100 #on teste 500 fois
-k = 5 #k=5 semble être une valeur plafond en terme de précision
+nb_eval = 200 #on teste 200 fois
+k = 3 #k=3 semble être la valeur à partir de laquelle la précision reste stable
 
 #Calcul des nb_eval tests et entrées dans la matrice de confusion
 for i in range(nb_eval):
@@ -134,3 +137,26 @@ print('versicolor |    ' + str(matrice_resultat[0][0]) + '    | ' + str(matrice_
 print('setosa     |    ' + str(matrice_resultat[1][0]) + '     | ' + str(matrice_resultat[1][1]) + '     |   ' + str(matrice_resultat[1][2]))
 print('virginica  |    ' + str(matrice_resultat[2][0]) + '     | ' + str(matrice_resultat[2][1]) + '      |   ' + str(matrice_resultat[2][2]))
 
+'''
+# ! COMMENTAIRES SUR LES RESULTATS
+
+Il apparaît que nous parvenons toujours à reconnaître tous les éléments d'Iris-setosa.
+On imagine alors que le cluster de ces éléments doit être graphiquement éloigné des autres cluster.
+
+On observe aussi que les erreurs faites par notre algorithme sont entre les groupes versicolor et virginica.
+Ces erreurs bien qu'en faible quantité sont également réparties (autant de confusions versicolor-virginica que virginica-versicolor).
+Nous imaginons qu'il existe une zone dans laquelle on peut retrouver en même densité des versicolor et des virginica ce qui expliquerait
+pourquoi nos confusions concernent uniquement ces deux types et sont également réparties.
+
+Notre taux de précision est en général entre 95% et 99%. Nous ne n'estimons pas nécessaire d'augmenter ce taux car nous risqerions de
+faire du sur-apprentissage.
+
+# ! COMMENTAIRES SUR LES VALEURS DE K
+Pour k=0 l'algorithme n'a pas de sens
+Pour k=1, notre algorithme ne fonctionne pas. En effet nous utilisons la plus grande distance des k voisins retenus dans notre 
+        méthode Determination_de_element. La manière dont fonctionne notre méthode nous empêche de prendre un k=1
+Pour k=2, l'algorithme fait des erreurs dans toutes les colonnes et les résultats sont globalement moins bons.
+        Le fait que k=2 ne fournisse pas de bons résultats nous pousse à penser qu'il en serait de même voire pire pour k=1
+        C'est pourquoi nous avons fait le choix de ne pas adapter le programme pour qu'il accepte k=1
+A partir de k=3 les résultats semblent être stables, augmenter k ne fait qu'allonger le temps d'exécution
+'''
