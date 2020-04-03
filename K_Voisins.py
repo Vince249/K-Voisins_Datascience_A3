@@ -138,8 +138,6 @@ print('setosa     |    ' + str(matrice_resultat[1][0]) + '     | ' + str(matrice
 print('virginica  |    ' + str(matrice_resultat[2][0]) + '     | ' + str(matrice_resultat[2][1]) + '      |   ' + str(matrice_resultat[2][2]))
 
 
-#Test Vincent
-
 '''
 # ! COMMENTAIRES SUR LES RESULTATS
 
