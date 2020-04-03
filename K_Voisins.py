@@ -62,9 +62,9 @@ def Trouver_les_k_voisins (tab,k,element):
 
 def Determination_de_element(liste_voisin_distance):
 
-    grp_versicolor = 0;
-    grp_virginica = 0;
-    grp_setosa = 0;
+    grp_versicolor = 0
+    grp_virginica = 0
+    grp_setosa = 0
     maxi = liste_voisin_distance[len(liste_voisin_distance)-1][1]
     for element in liste_voisin_distance:
         #! On veut mettre en avant la proximité des k voisins par rapport à l'élément testé
@@ -80,16 +80,8 @@ def Determination_de_element(liste_voisin_distance):
     if((grp_versicolor> grp_setosa) and (grp_versicolor> grp_virginica)): return 'Iris-versicolor'
     if((grp_setosa> grp_versicolor) and (grp_setosa> grp_virginica)): return 'Iris-setosa'
     if((grp_virginica> grp_setosa) and (grp_virginica> grp_versicolor)): return 'Iris-virginica'
-        
 
 
-#Normalisation des valeurs
-
-
-
-# On définit k
-
-#On teste 100 fois
 def Algorithme_K_Voisin (k):
     liste = Ouverture_Fichier()
     Normalisation(liste,0)
@@ -108,12 +100,12 @@ def Algorithme_K_Voisin (k):
 
     return (reponse == element_a_tester[4])
 
+
+#! Main
 nb_bon = 0
-nb_eval = 500
+nb_eval = 500 #on teste 500 fois
 k = 5 #k=5 semble être une valeur plafond en terme de précision
 for i in range(nb_eval):
     if(Algorithme_K_Voisin(k)): nb_bon+=1
 print("Le taux de réussite de l'algorithme est de " + str((nb_bon/nb_eval)*100) + "%")
-
-
 
